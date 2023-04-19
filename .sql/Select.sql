@@ -1,1 +1,1 @@
-SELECT* from prodotti p
+SELECT* from authors

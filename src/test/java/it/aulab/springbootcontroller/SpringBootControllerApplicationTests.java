@@ -6,9 +6,11 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.aulab.springbootcontroller.model.Author;
 import it.aulab.springbootcontroller.model.Comment;
@@ -16,12 +18,15 @@ import it.aulab.springbootcontroller.model.Post;
 import it.aulab.springbootcontroller.repository.AuthorRepository;
 import it.aulab.springbootcontroller.repository.CommentRepository;
 import it.aulab.springbootcontroller.repository.PostRepository;
+import it.aulab.springbootcontroller.service.AuthorService;
+import it.aulab.springbootcontroller.service.AuthorServiceImpl;
 
 import static org.assertj.core.api.Assertions.*;
 
-
-@DataJpaTest
+@SpringBootTest
+// @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+// con spring boot test autoconfigure non vale più quindi aggiunge i dati al database
 class SpringBootControllerApplicationTests {
 	
 	@Autowired
@@ -31,6 +36,11 @@ class SpringBootControllerApplicationTests {
 	PostRepository postRepository;
 	@Autowired
 	CommentRepository commentRepository;
+
+	@Autowired
+	
+	AuthorService authorService;
+	
 	
 		@BeforeEach
 	
@@ -178,8 +188,21 @@ class SpringBootControllerApplicationTests {
 		assertThat(commentRepository.count()).isEqualTo(0);
 	}
 
-
-
 	
+	
+	
+
+
+	@Test
+	void testTransaction(){
+		try{
+
+			authorService.noTransaction();
+		}catch (Exception e){
+
+			
+			assertThat(authorRepository.findByFirstNameAndLastName(null, null)).hasSize(0);
+		}
+	}
 
 }

@@ -1,4 +1,6 @@
-
+-- delete from comments;
+-- delete from posts;
+-- delete from authors;
 
 insert into authors(firstname, lastname, email)
 values ('Mirko', 'Abbrescia', 'mirkoabbrescia@gmail.com'),
